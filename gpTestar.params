@@ -1,0 +1,116 @@
+# Threads and Seeds
+evalthreads = 1
+breedthreads = 1
+seed.0 = time
+
+# Checkpointing
+checkpoint = false
+checkpoint-modulo = 1
+checkpoint-prefix = ec
+
+# these are the parameters for the TreeConstraints
+gp.tc.size = 1
+gp.tc.0 = ec.gp.GPTreeConstraints
+gp.tc.0.name = tc0
+
+pop.subpop.0.species = ec.gp.GPSpecies
+pop.subpop.0.species.ind = ec.gp.GPIndividual
+pop.subpop.0.species.ind.numtrees = 1
+pop.subpop.0.species.ind.tree.0 = ec.gp.GPTree
+
+
+# we assign to every tree the same gptreeconstraints because all of them 
+# are going to hold an IF-THEN-ELSE rule
+pop.subpop.0.species.ind.tree.0.tc = tc0
+
+# these are the parameters to the FunctionSet
+gp.fs.size = 1
+gp.fs.0 = ec.gp.GPFunctionSet
+gp.fs.0.name = f0
+
+gp.tc.0.fset = f0
+
+gp.type.a.size = 1
+gp.type.a.0.name = nil
+gp.type.s.size = 0
+
+gp.tc.0.returns = nil
+
+gp.nc.size = 3
+
+gp.nc.0 = ec.gp.GPNodeConstraints
+gp.nc.0.name = nc0
+gp.nc.0.returns = nil
+gp.nc.0.size = 0
+
+gp.nc.1 = ec.gp.GPNodeConstraints
+gp.nc.1.name = nc1
+gp.nc.1.returns = nil
+gp.nc.1.size = 1
+gp.nc.1.child.0 = nil
+
+gp.nc.2 = ec.gp.GPNodeConstraints
+gp.nc.2.name = nc2
+gp.nc.2.returns = nil
+gp.nc.2.size = 2
+gp.nc.2.child.0 = nil
+gp.nc.2.child.1 = nil
+
+gp.nc.3 = ec.gp.GPNodeConstraints
+gp.nc.3.name = nc3
+gp.nc.3.returns = nil
+gp.nc.3.size = 3
+gp.nc.3.child.0 = nil
+gp.nc.3.child.1 = nil
+gp.nc.3.child.2 = nil
+
+gp.fs.0 = ec.gp.GPFunctionSet
+
+gp.fs.0.size = 11
+
+gp.fs.0.func.0 = structure.TESTAR_IF
+gp.fs.0.func.0.nc = nc3
+
+gp.fs.0.func.1 = structure.TESTAR_Condition
+gp.fs.0.func.1.nc = nc1
+
+gp.fs.0.func.2 = structure.TESTAR_Then
+gp.fs.0.func.2.nc = nc1
+
+gp.fs.0.func.3 = structure.TESTAR_Else
+gp.fs.0.func.3.nc = nc1
+
+gp.fs.0.func.4 = operator.TESTAR_LT
+gp.fs.0.func.4.nc = nc2
+
+gp.fs.0.func.5 = POJO.ActionNode
+gp.fs.0.func.5.nc = nc1
+
+gp.fs.0.func.6 = POJO.ActionNode
+gp.fs.0.func.6.nc = nc1
+
+gp.fs.0.func.7 = leaves.TESTAR_Terminals
+gp.fs.0.func.7.nc = nc0
+
+gp.fs.0.func.8 = leaves.TESTAR_Terminals
+gp.fs.0.func.8.nc = nc0
+
+gp.fs.0.func.9 = leaves.TESTAR_Roles
+gp.fs.0.func.9.nc = nc0
+
+gp.fs.0.func.10 = leaves.TESTAR_Roles
+gp.fs.0.func.10.nc = nc0
+
+# These are the probabilities for selecting the 
+# different kind of nodes in the tree by KozaNodeSelector.
+gp.koza.ns.terminals = 0.1
+gp.koza.ns.nonterminals = 0.9
+gp.koza.ns.root = 0.0
+
+# These are the parameters for the KozaNodeSelector inside
+# a given tree
+pop.subpop.0.species.pipe.tries = 1
+pop.subpop.0.species.pipe.maxdepth = 17
+pop.subpop.0.species.pipe.toss = false
+pop.subpop.0.species.pipe.ns.0 = ec.gp.koza.KozaNodeSelector
+pop.subpop.0.species.pipe.ns.1 = same
